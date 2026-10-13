@@ -1,5 +1,6 @@
 import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
+import { getBackendUrl } from './api';
 
 class WebSocketService {
   constructor() {
@@ -16,9 +17,8 @@ class WebSocketService {
       return;
     }
 
-    const defaultUrl = import.meta.env.VITE_API_URL
-      ? `${import.meta.env.VITE_API_URL.replace(/\/+$/, '')}/ws`
-      : '/ws';
+    const base = getBackendUrl();
+    const defaultUrl = base ? `${base}/ws` : '/ws';
     const targetUrl = url || defaultUrl;
 
     this._updateState('CONNECTING');

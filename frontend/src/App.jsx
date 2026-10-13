@@ -247,6 +247,7 @@ export default function App() {
         liveMetrics={metrics}
         autoTraffic={autoTraffic}
         setAutoTraffic={setAutoTraffic}
+        onRefreshData={loadInitialData}
       />
 
       {/* Main SOC Dashboard Viewport */}
