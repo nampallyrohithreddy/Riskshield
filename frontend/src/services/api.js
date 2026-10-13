@@ -1,4 +1,6 @@
-const API_BASE = '/api/v1/transactions';
+const API_BASE = import.meta.env.VITE_API_URL 
+  ? `${import.meta.env.VITE_API_URL.replace(/\/+$/, '')}/api/v1/transactions` 
+  : '/api/v1/transactions';
 
 export const api = {
   async evaluate(transactionData) {

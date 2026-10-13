@@ -11,16 +11,21 @@ class WebSocketService {
     this.reconnectAttempts = 0;
   }
 
-  connect(url = '/ws') {
+  connect(url) {
     if (this.client && this.client.active) {
       return;
     }
+
+    const defaultUrl = import.meta.env.VITE_API_URL
+      ? `${import.meta.env.VITE_API_URL.replace(/\/+$/, '')}/ws`
+      : '/ws';
+    const targetUrl = url || defaultUrl;
 
     this._updateState('CONNECTING');
 
     this.client = new Client({
       // Using webSocketFactory with SockJS for resilient fallback
-      webSocketFactory: () => new SockJS(url),
+      webSocketFactory: () => new SockJS(targetUrl),
       reconnectDelay: 3000,
       heartbeatIncoming: 4000,
       heartbeatOutgoing: 4000,
