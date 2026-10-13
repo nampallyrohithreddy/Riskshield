@@ -3,6 +3,14 @@
   "outputDirectory": "frontend/dist",
   "rewrites": [
     {
+      "source": "/api/:match*",
+      "destination": "https://riskshield-307g.onrender.com/api/:match*"
+    },
+    {
+      "source": "/ws/:match*",
+      "destination": "https://riskshield-307g.onrender.com/ws/:match*"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }

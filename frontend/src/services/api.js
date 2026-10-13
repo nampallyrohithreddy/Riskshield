@@ -1,3 +1,5 @@
+const DEFAULT_BACKEND_URL = 'https://riskshield-307g.onrender.com';
+
 export function getBackendUrl() {
   if (typeof window !== 'undefined' && window.localStorage) {
     const custom = window.localStorage.getItem('riskshield_backend_url');
@@ -8,7 +10,7 @@ export function getBackendUrl() {
   if (import.meta.env.VITE_API_URL) {
     return import.meta.env.VITE_API_URL.replace(/\/+$/, '');
   }
-  return '';
+  return DEFAULT_BACKEND_URL;
 }
 
 export function setBackendUrl(url) {
