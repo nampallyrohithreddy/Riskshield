@@ -1,14 +1,22 @@
-const BACKEND_URL = 'https://riskshield-307g.onrender.com';
-const API_BASE = `${BACKEND_URL}/api/v1/transactions`;
+// Mutable so BackendConfigModal can override at runtime.
+// Defaults to the permanent Render deployment — auto-connects on first load.
+let _backendUrl = 'https://riskshield-307g.onrender.com';
 
-// Exported so websocket.js (and any other service) can resolve the base URL
 export function getBackendUrl() {
-  return BACKEND_URL;
+  return _backendUrl;
+}
+
+export function setBackendUrl(url) {
+  _backendUrl = url || 'https://riskshield-307g.onrender.com';
+}
+
+function getApiBase() {
+  return `${_backendUrl}/api/v1/transactions`;
 }
 
 export const api = {
   async evaluate(transactionData) {
-    const res = await fetch(`${API_BASE}/evaluate`, {
+    const res = await fetch(`${getApiBase()}/evaluate`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(transactionData),
@@ -18,19 +26,19 @@ export const api = {
   },
 
   async getRecent(limit = 25) {
-    const res = await fetch(`${API_BASE}/recent?limit=${limit}`);
+    const res = await fetch(`${getApiBase()}/recent?limit=${limit}`);
     if (!res.ok) throw new Error(`HTTP ${res.status}: ${await res.text()}`);
     return await res.json();
   },
 
   async getMetrics() {
-    const res = await fetch(`${API_BASE}/metrics`);
+    const res = await fetch(`${getApiBase()}/metrics`);
     if (!res.ok) throw new Error(`HTTP ${res.status}: ${await res.text()}`);
     return await res.json();
   },
 
   async simulate(scenario = 'normal') {
-    const res = await fetch(`${API_BASE}/simulate?scenario=${encodeURIComponent(scenario)}`, {
+    const res = await fetch(`${getApiBase()}/simulate?scenario=${encodeURIComponent(scenario)}`, {
       method: 'POST',
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}: ${await res.text()}`);
@@ -38,7 +46,7 @@ export const api = {
   },
 
   async getHealth() {
-    const res = await fetch(`${API_BASE}/health`);
+    const res = await fetch(`${getApiBase()}/health`);
     if (!res.ok) throw new Error(`HTTP ${res.status}: ${await res.text()}`);
     return await res.json();
   },
