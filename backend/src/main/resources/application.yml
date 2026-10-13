@@ -4,14 +4,11 @@ server:
 spring:
   application:
     name: riskshield-gateway
-
-  spring:
   datasource:
     url: ${SPRING_DATASOURCE_URL}
     driver-class-name: org.postgresql.Driver
     username: ${SPRING_DATASOURCE_USERNAME}
     password: ${SPRING_DATASOURCE_PASSWORD}
-
   jpa:
     hibernate:
       ddl-auto: update
