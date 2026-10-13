@@ -1,36 +1,14 @@
-const DEFAULT_BACKEND_URL = 'https://riskshield-307g.onrender.com';
+const BACKEND_URL = 'https://riskshield-307g.onrender.com';
+const API_BASE = `${BACKEND_URL}/api/v1/transactions`;
 
+// Exported so websocket.js (and any other service) can resolve the base URL
 export function getBackendUrl() {
-  if (typeof window !== 'undefined' && window.localStorage) {
-    const custom = window.localStorage.getItem('riskshield_backend_url');
-    if (custom && custom.trim()) {
-      return custom.trim().replace(/\/+$/, '');
-    }
-  }
-  if (import.meta.env.VITE_API_URL) {
-    return import.meta.env.VITE_API_URL.replace(/\/+$/, '');
-  }
-  return DEFAULT_BACKEND_URL;
-}
-
-export function setBackendUrl(url) {
-  if (typeof window !== 'undefined' && window.localStorage) {
-    if (url && url.trim()) {
-      window.localStorage.setItem('riskshield_backend_url', url.trim().replace(/\/+$/, ''));
-    } else {
-      window.localStorage.removeItem('riskshield_backend_url');
-    }
-  }
-}
-
-function getApiBase() {
-  const base = getBackendUrl();
-  return base ? `${base}/api/v1/transactions` : '/api/v1/transactions';
+  return BACKEND_URL;
 }
 
 export const api = {
   async evaluate(transactionData) {
-    const res = await fetch(`${getApiBase()}/evaluate`, {
+    const res = await fetch(`${API_BASE}/evaluate`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(transactionData),
@@ -40,19 +18,19 @@ export const api = {
   },
 
   async getRecent(limit = 25) {
-    const res = await fetch(`${getApiBase()}/recent?limit=${limit}`);
+    const res = await fetch(`${API_BASE}/recent?limit=${limit}`);
     if (!res.ok) throw new Error(`HTTP ${res.status}: ${await res.text()}`);
     return await res.json();
   },
 
   async getMetrics() {
-    const res = await fetch(`${getApiBase()}/metrics`);
+    const res = await fetch(`${API_BASE}/metrics`);
     if (!res.ok) throw new Error(`HTTP ${res.status}: ${await res.text()}`);
     return await res.json();
   },
 
   async simulate(scenario = 'normal') {
-    const res = await fetch(`${getApiBase()}/simulate?scenario=${encodeURIComponent(scenario)}`, {
+    const res = await fetch(`${API_BASE}/simulate?scenario=${encodeURIComponent(scenario)}`, {
       method: 'POST',
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}: ${await res.text()}`);
@@ -60,7 +38,7 @@ export const api = {
   },
 
   async getHealth() {
-    const res = await fetch(`${getApiBase()}/health`);
+    const res = await fetch(`${API_BASE}/health`);
     if (!res.ok) throw new Error(`HTTP ${res.status}: ${await res.text()}`);
     return await res.json();
   },
