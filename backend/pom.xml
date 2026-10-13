@@ -56,6 +56,10 @@
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
         </dependency>
+        <dependency>
+    <groupId>com.mysql</groupId>
+    <artifactId>mysql-connector-j</artifactId>
+</dependency>
 
         <!-- H2 Database for smooth zero-dependency local development & testing -->
         <dependency>
