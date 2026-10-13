@@ -1,0 +1,19 @@
+# Compiled class files
+**/target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# Dependencies
+**/node_modules/
+
+# Production build
+**/dist/
+**/build/
+
+# IDE files
+.idea/
+*.iml
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db

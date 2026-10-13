@@ -27,9 +27,15 @@ public class RedisVelocityService {
 
     private volatile boolean redisAvailable = true;
 
-    @Autowired(required = false)
-    public RedisVelocityService(StringRedisTemplate redisTemplate) {
+    public RedisVelocityService() {
+        this.redisTemplate = null;
+        this.redisAvailable = false;
+    }
+
+    @Autowired
+    public RedisVelocityService(@Autowired(required = false) StringRedisTemplate redisTemplate) {
         this.redisTemplate = redisTemplate;
+        this.redisAvailable = (redisTemplate != null);
     }
 
     /**

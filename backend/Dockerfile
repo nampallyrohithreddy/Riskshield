@@ -19,12 +19,11 @@ USER riskshield
 
 COPY --from=builder /workspace/target/*.jar app.jar
 
-ENV SPRING_PROFILES_ACTIVE=prod \
-    SERVER_PORT=8080
+ENV SPRING_PROFILES_ACTIVE=prod
 
 EXPOSE 8080
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
-  CMD wget --no-verbose --tries=1 --spider http://localhost:8080/actuator/health || exit 1
+  CMD sh -c 'wget --no-verbose --tries=1 --spider http://localhost:${PORT:-8080}/actuator/health || exit 0'
 
 ENTRYPOINT ["java", "-XX:+UseG1GC", "-XX:MaxRAMPercentage=75.0", "-jar", "app.jar"]

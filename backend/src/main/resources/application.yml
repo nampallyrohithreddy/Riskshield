@@ -4,9 +4,13 @@ server:
 spring:
   application:
     name: riskshield-gateway
+
   datasource:
-    url: jdbc:${SPRING_DATASOURCE_URL}
-    driver-class-name: org.postgresql.Driver
+    url: ${SPRING_DATASOURCE_URL:${DATABASE_URL:}}
+    username: ${SPRING_DATASOURCE_USERNAME:}
+    password: ${SPRING_DATASOURCE_PASSWORD:}
+    driver-class-name: ${SPRING_DATASOURCE_DRIVER_CLASS_NAME:org.postgresql.Driver}
+
   jpa:
     hibernate:
       ddl-auto: update
@@ -37,6 +41,19 @@ riskshield:
     high-amount-threshold: 10000.00
     velocity-threshold-window-seconds: 60
     velocity-threshold-max-transactions: 4
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  health:
+    redis:
+      enabled: false
 
 logging:
   level:
